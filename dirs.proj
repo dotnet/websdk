@@ -1,0 +1,26 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <ProjectFiles Include="src\Microsoft.DotNet.Publishing.Tasks\Microsoft.DotNet.Publishing.Tasks.csproj" />
+        <ProjectFiles Include="src\Microsoft.DotNet.Publishing.Package\Microsoft.DotNet.Publishing.Package.csproj" />
+        <ProjectFiles Include="test\Microsoft.DotNet.Publishing.Tasks.Tests\Microsoft.DotNet.Publishing.Tasks.Tests.csproj" />
+    </ItemGroup>
+
+    <Target Name="Build">
+        <PropertyGroup>
+            <!-- When C# projects have external dependencies that are shared,
+                 the Copy task can fail during parallel builds because multiple
+                 builds attempt to copy the same DLL at the same time.
+                 These properties tell the Copy task to retry after such a failure,
+                 so the build can ultimately succeed. -->
+            <CopyRetryProperties>Retries=20;RetryDelayMilliseconds=150</CopyRetryProperties>
+        </PropertyGroup>
+    
+        <MSBuild Projects="@(ProjectFiles)" BuildInParallel="true" Targets="Build"
+                 Properties="$(CopyRetryProperties)" />
+    </Target>
+    
+    <Target Name="Clean">
+        <MSBuild Projects="@(ProjectFiles)" BuildInParallel="true" Targets="Clean" />
+    </Target>
+
+</Project>
