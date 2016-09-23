@@ -1,8 +1,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup>
-        <ProjectFiles Include="src\Microsoft.DotNet.Publishing.Tasks\Microsoft.DotNet.Publishing.Tasks.csproj" />
-        <ProjectFiles Include="src\Microsoft.DotNet.Publishing.Package\Microsoft.DotNet.Publishing.Package.csproj" />
-        <ProjectFiles Include="test\Microsoft.DotNet.Publishing.Tasks.Tests\Microsoft.DotNet.Publishing.Tasks.Tests.csproj" />
+        <ProjectFiles Include="src\Microsoft.DotNet.Publish.Tasks\Microsoft.DotNet.Publish.Tasks.csproj" />
+        <ProjectFiles Include="src\Microsoft.DotNet.Publish.Package\Microsoft.DotNet.Publish.Package.csproj" />
+        <ProjectFiles Include="test\Microsoft.DotNet.Publish.Tasks.Tests\Microsoft.DotNet.Publish.Tasks.Tests.csproj" />
     </ItemGroup>
 
     <Target Name="Build">
