@@ -4,6 +4,7 @@
 
     <ItemGroup>
         <ProjectFiles Include="src\Microsoft.DotNet.Publish.Tasks\Microsoft.DotNet.Publish.Tasks.csproj" />
+        <ProjectFiles Include="src\Microsoft.DotNetCore.Publish.Tasks\Microsoft.DotNetCore.Publish.Tasks.csproj" />
         <ProjectFiles Include="src\Microsoft.DotNet.Publish.Package\Microsoft.DotNet.Publish.Package.csproj" />
         <ProjectFiles Include="test\Microsoft.DotNet.Publish.Tasks.Tests\Microsoft.DotNet.Publish.Tasks.Tests.csproj" />
     </ItemGroup>
