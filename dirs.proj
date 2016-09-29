@@ -1,4 +1,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <UsingTask AssemblyFile="$(PublishTools)\Microsoft.Web.MsBuildTasks2.dll" TaskName="Microsoft.Web.MsBuildTasks.SubmitCodeSignJob" />
+    <UsingTask AssemblyFile="$(PublishTools)\Microsoft.Web.MsBuildTasks2.dll" TaskName="Microsoft.Web.MsBuildTasks.WaitForCodeSignJobs" />
+
     <ItemGroup>
         <ProjectFiles Include="src\Microsoft.DotNet.Publish.Tasks\Microsoft.DotNet.Publish.Tasks.csproj" />
         <ProjectFiles Include="src\Microsoft.DotNet.Publish.Package\Microsoft.DotNet.Publish.Package.csproj" />
@@ -14,13 +17,126 @@
                  so the build can ultimately succeed. -->
             <CopyRetryProperties>Retries=20;RetryDelayMilliseconds=150</CopyRetryProperties>
         </PropertyGroup>
-    
+
         <MSBuild Projects="@(ProjectFiles)" BuildInParallel="true" Targets="Build"
                  Properties="$(CopyRetryProperties)" />
     </Target>
-    
+
     <Target Name="Clean">
         <MSBuild Projects="@(ProjectFiles)" BuildInParallel="true" Targets="Clean" />
+    </Target>
+    
+    <!-- CODESIGN related targets -->
+    <PropertyGroup>
+        <CodeSignCertificates>400</CodeSignCertificates>
+        <CodeSignDisplayName>Microsoft ASP.NET</CodeSignDisplayName>
+        <CodeSignUrl>http://www.asp.net/</CodeSignUrl>
+        <CodeSignCreateTestJob Condition="'$(CodeSignCreateTestJob)' == ''">false</CodeSignCreateTestJob>
+        <CodeSignOutputPath>$(PublishRoot)\bin\Signed</CodeSignOutputPath>
+        <CodeSignScriptsPath>$(CodeSignOutputPath)\scripts</CodeSignScriptsPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <BinariesToSign>
+            <Certificates>$(CodeSignCertificates)</Certificates>
+            <Description>Signing publishing targets binaries</Description>
+            <DisplayName>$(CodeSignDisplayName)</DisplayName>
+            <Url>$(CodeSignUrl)</Url>
+        </BinariesToSign>
+    </ItemDefinitionGroup>
+
+    <Target Name="Sign" Condition="'$(Sign)' != ''" DependsOnTargets="Build">
+        <ItemGroup>
+            <CodeSignApprovers Include="$(CodeSignApprovers)" />
+        </ItemGroup>
+
+        <PropertyGroup>
+            <PackagesOutputPath>$(PublishRoot)\bin\$(Configuration)\NuGet</PackagesOutputPath>
+            <UnsignedPackagesPath>$(PublishRoot)\obj\packages</UnsignedPackagesPath>
+            <UnsignedBinariesPath>$(PublishRoot)\obj\unsignedbinaries</UnsignedBinariesPath>
+            <SignedBinariesPath>$(CodeSignOutputPath)</SignedBinariesPath>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <UnsignedPackages Include="$(PackagesOutputPath)\*.nupkg" />
+        </ItemGroup>
+
+        <!-- Extract the content -->
+        <Exec Command="$(PublishTools)\7za.exe x -y -scsUTF-8 -o@(UnsignedPackages->'$(UnsignedPackagesPath)\%(Filename)') %(UnsignedPackages.Identity)" />
+
+        <!-- Flatten the file names -->
+        <ItemGroup>
+            <_UnsignedBinaries Include="$(UnsignedPackagesPath)\**\*.dll;
+                                        $(UnsignedPackagesPath)\**\*.exe;
+                                        $(UnsignedPackagesPath)\**\*.psd1;
+                                        $(UnsignedPackagesPath)\**\*.psm1;
+                                        $(UnsignedPackagesPath)\**\*.ps1" />
+
+            <UnsignedBinaries Include="@(_UnsignedBinaries)">
+                <!-- Flattened file for signing -->
+                <UnsignedFlatFileName>$(UnsignedBinariesPath)\$([System.String]::new('%(RecursiveDir)%(FileName)%(Extension)').Replace('\', '__'))</UnsignedFlatFileName>
+                <SignedFlatFileName>$(SignedBinariesPath)\$([System.String]::new('%(RecursiveDir)%(FileName)%(Extension)').Replace('\', '__'))</SignedFlatFileName>
+            </UnsignedBinaries>
+        </ItemGroup>
+
+        <ItemGroup>
+            <PackageBinariesToSign Include="%(UnsignedBinaries.UnsignedFlatFileName)" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(UnsignedBinaries)" DestinationFiles="@(UnsignedBinaries->'%(UnsignedFlatFileName)')" SkipUnchangedFiles="true" />
+
+        <RemoveDir Directories="$(CodeSignScriptsPath)" />
+        <MakeDir Directories="$(CodeSignScriptsPath)" />
+
+        <ItemGroup>
+            <BinariesToSign Include="@(PackageBinariesToSign)">
+                <CopyScript>PublishBinariesAuth400.bat</CopyScript>
+                <CopyScriptTargetPath>$(CodeSignOutputPath)</CopyScriptTargetPath>
+            </BinariesToSign>
+        </ItemGroup>
+
+        <SubmitCodeSignJob
+            Approvers="$(CodeSignApprovers)"
+            Certificates="%(Certificates)"
+            CopyScript="$(CodeSignScriptsPath)\%(CopyScript)"
+            CopyScriptRemoveTargetFolder="false"
+            CopyScriptTargetPath="%(CopyScriptTargetPath)"
+            Description="%(Description)"
+            DisplayName="%(DisplayName)"
+            DisplayUrl="%(Url)"
+            Files="@(BinariesToSign)"
+            GenerateCopyScript="true"
+            Poll="false"
+            SSL="true"
+            CreateTestJob="$(CodeSignCreateTestJob)"
+            Test="$(TestCodeSign)">
+            <Output TaskParameter="JobNumber" ItemName="CodeSignJobNumbers" />
+            <Output TaskParameter="CompletionPath" PropertyName="CodeSignCompletionPath" />
+        </SubmitCodeSignJob>
+
+        <WaitForCodeSignJobs JobNumbers="@(CodeSignJobNumbers)" Test="$(TestCodeSign)" />
+
+        <Exec Command="$(CodeSignScriptsPath)\%(BinariesToSign.CopyScript)" />
+
+        <!-- Replace unsigned files with signed files -->
+        <Copy SourceFiles="@(UnsignedBinaries->'%(SignedFlatFileName)')" DestinationFiles="@(UnsignedBinaries->'%(FullPath)')" />
+
+        <ItemGroup>
+            <NuSpec Include="$(UnsignedPackagesPath)\**\*.nuspec" />
+        </ItemGroup>
+
+        <MSBuild Projects="$(MSBuildProjectFile)"
+                 Properties="Configuration=$(Configuration);Sign=$(Sign);TestCodeSign=$(TestCodeSign);NuSpecFile=%(NuSpec.Identity);OutDir=$(CodeSignOutputPath)\Packages"
+                 Targets="RebuildPackage"/>
+    </Target>
+
+    <Target Name="RebuildPackage">
+        <PropertyGroup>
+            <WorkingDir>$([System.IO.Path]::GetDirectoryName($(NuSpecFile)))</WorkingDir>
+            <PackageName>$([System.IO.Path]::GetFileName($(WorkingDir)))</PackageName>
+        </PropertyGroup>
+        <Error Condition="'$(OutDir)'==''" Text="Output dir not specified" />
+        <Exec Command="$(DNXToolsPath)7za.exe a -tzip -mx9 -r -y $(OutDir)\$(PackageName).nupkg *" WorkingDirectory="$(WorkingDir)" />
     </Target>
 
 </Project>
