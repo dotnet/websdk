@@ -15,8 +15,9 @@
     <CoreSdkDropDir Condition="'$(CoreSdkDropDir)' == ''">\\cpvsbuild\Drops\Roslyn\Roslyn-Project-System\DotNet-Core-Sdk</CoreSdkDropDir>
     <VersionPrefix Condition="'$(VersionPrefix)' == ''">1.0.0</VersionPrefix>
     <VersionPrereleasePrefix Condition="'$(VersionPrereleasePrefix)' == ''">alpha</VersionPrereleasePrefix>
-    <Date>$([System.DateTime]::Now.ToString(yyyyMMdd))</Date>
     <PackagesOutputPath>$(WebSdkRoot)\bin\$(Configuration)\NuGet</PackagesOutputPath>
+    <LocalDropRoot>$(WebSdkRoot)\bin\$(Configuration)</LocalDropRoot>
+    <CodeSignOutputPath>$(WebSdkRoot)\bin\Signed</CodeSignOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -81,8 +82,10 @@
       (final release builds, should provide final versions (not pre-release ones))
     -->
     <PropertyGroup>
-      <WebSdkBuildVersion Condition="'$(WebSdkVersion)' == ''">$(Date)</WebSdkBuildVersion>
-      <WebSdkVersion Condition="'$(WebSdkVersion)' == ''">$(VersionPrefix)-$(VersionPrereleasePrefix)-$(WebSdkBuildVersion)</WebSdkVersion>
+      <BUILD_NUMBER>100</BUILD_NUMBER>
+      <WebSdkBuildVersion Condition="'$(WebSdkVersion)' == ''">$(CoreSdkBuildVersion)</WebSdkBuildVersion>
+      <CiBuildPostfix Condition="'$(BUILD_NUMBER)' != ''">-$(BUILD_NUMBER)</CiBuildPostfix>
+      <WebSdkVersion Condition="'$(WebSdkVersion)' == ''">$(VersionPrefix)-$(VersionPrereleasePrefix)-$(WebSdkBuildVersion)$(CiBuildPostfix)</WebSdkVersion>
     </PropertyGroup>
   </Target>
   
@@ -105,38 +108,24 @@
   </Target>
 
   <Target Name="PrepareLocalDrop">
-    <!-- Copy core sdk packages to web drop -->
+    <!-- Generate semaphore files for core and web sdk -->
     <PropertyGroup>
-      <CodeSignOutputPath>$(WebSdkRoot)\bin\Signed</CodeSignOutputPath>
-      <LocalDropPath Condition="'$(Sign)' != ''">$(CodeSignOutputPath)</LocalDropPath>
-      <LocalDropPath Condition="'$(LocalCoreSdkDropPath)' == ''">$(PackagesOutputPath)</LocalDropPath>
-      <WebSdkPackagesDropDir Condition="'$(WebSdkPackagesDropDir)' == ''">$(LocalDropPath)</WebSdkPackagesDropDir>
+      <WebSdkSemaphorePath>$(LocalDropRoot)\web-sdk.sem</WebSdkSemaphorePath>
     </PropertyGroup>
 
     <ItemGroup>
-      <CoreSdkPackages Include="$(CoreSdkPackagesDropDir)\*.nupkg" />
+      <SemaphoreParameter Include="CoreSdkVersion=$(CoreSdkBuildVersion)" />
+      <SemaphoreParameter Include="CoreSdkDropPath=$(CoreSdkDropDir)\$(CoreSdkBuildVersion)" />
+      <SemaphoreParameter Include="WebSdkVersion=$(WebSdkVersion)"/>
+      <SemaphoreParameter Include="WebSdkDropPath=$(WebSdkPackagesDropDir)" />
     </ItemGroup>
-    
-    <Copy SourceFiles="@(CoreSdkPackages)" DestinationFolder="$(LocalDropPath)" SkipUnchangedFiles="true" />
 
-    <!-- Generate semaphore files for core and web sdk -->
-    <PropertyGroup>
-      <CoreSdkSemaphorePath>$(LocalDropPath)\core-sdk.sem</CoreSdkSemaphorePath>
-      <WebSdkSemaphorePath>$(LocalDropPath)\web-sdk.sem</WebSdkSemaphorePath>
-    </PropertyGroup>
-    
-    <GenerateSemaphore ProductVersion="$(CoreSdkVersion)" 
-                       ProductDropPath="$(CoreSdkPackagesDropDir)" 
-                       SemaphoreFilePath="$(CoreSdkSemaphorePath)" />
-    <GenerateSemaphore ProductVersion="$(WebSdkVersion)"
-                       ProductDropPath="$(WebSdkPackagesDropDir)"
-                       SemaphoreFilePath="$(WebSdkSemaphorePath)" />
+    <GenerateSemaphore Parameters="@(SemaphoreParameter)" SemaphoreFilePath="$(WebSdkSemaphorePath)" />    
   </Target>
 
   <UsingTask TaskName="GenerateSemaphore" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
     <ParameterGroup>
-      <ProductVersion ParameterType="System.String" Required="true" />
-      <ProductDropPath ParameterType="System.String" Required="true" />
+      <Parameters ParameterType="System.String[]" Required="true" />
       <SemaphoreFilePath ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
@@ -145,9 +134,12 @@
       <Code Type="Fragment" Language="cs">
         <![CDATA[
             var builder = new StringBuilder();
-            builder.AppendLine(string.Format("Version={0}", ProductVersion));
-            builder.AppendLine(string.Format("DropPath={0}", ProductDropPath));
-
+            builder.AppendLine("[Semaphore]");
+            foreach(var par in Parameters)
+            {
+              builder.AppendLine(par);
+            }
+            
             var retry = 5;
             while (retry > 0)
             {
