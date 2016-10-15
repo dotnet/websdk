@@ -126,7 +126,7 @@
       <SignedPackages Include="$(CodeSignOutputPath)\Packages\*.nupkg" />
     </ItemGroup>
 
-    <Exec Command="$(NugetExe) %(SignedPackages.Identity) $(MyGetSecurityToken) -Source https://dotnet.myget.org/F/dotnet-web/api/v2/package" Condition="'$(MyGetSecurityToken)' != ''" />   
+    <Exec Command="$(NugetExe) push %(SignedPackages.Identity) $(MyGetSecurityToken) -Source https://dotnet.myget.org/F/dotnet-web/api/v2/package" Condition="'$(MyGetSecurityToken)' != ''" />   
   </Target>
 
   <UsingTask TaskName="GenerateSemaphore" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
