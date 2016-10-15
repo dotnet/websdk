@@ -18,6 +18,7 @@
     <PackagesOutputPath>$(WebSdkRoot)\bin\$(Configuration)\NuGet</PackagesOutputPath>
     <LocalDropRoot>$(WebSdkRoot)\bin\$(Configuration)</LocalDropRoot>
     <CodeSignOutputPath>$(WebSdkRoot)\bin\Signed</CodeSignOutputPath>
+    <NugetExe>$(WebSdkRoot)\tools\NuGet\NuGet.exe</NugetExe>
   </PropertyGroup>
 
   <ItemGroup>
@@ -106,7 +107,7 @@
     <MSBuild Projects="@(ProjectFiles)" BuildInParallel="true" Targets="Clean" />
   </Target>
 
-  <Target Name="PrepareLocalDrop">
+  <Target Name="_Publish">
     <!-- Generate semaphore files for core and web sdk -->
     <PropertyGroup>
       <WebSdkSemaphorePath>$(LocalDropRoot)\web-sdk.sem</WebSdkSemaphorePath>
@@ -119,7 +120,13 @@
       <SemaphoreParameter Include="WebSdkDropPath=$(WebSdkPackagesDropDir)" />
     </ItemGroup>
 
-    <GenerateSemaphore Parameters="@(SemaphoreParameter)" SemaphoreFilePath="$(WebSdkSemaphorePath)" />    
+    <GenerateSemaphore Parameters="@(SemaphoreParameter)" SemaphoreFilePath="$(WebSdkSemaphorePath)" />
+
+    <ItemGroup>
+      <SignedPackages Include="$(CodeSignOutputPath)\*.nupkg" />
+    </ItemGroup>
+
+    <Exec Command="$(NugetExe) %(SignedPackages.Identity) $(MyGetSecurityToken) -Source https://dotnet.myget.org/F/dotnet-web/api/v2/package" Condition="'$(MyGetSecurityToken)' != ''" />   
   </Target>
 
   <UsingTask TaskName="GenerateSemaphore" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
@@ -178,7 +185,7 @@
     </BinariesToSign>
   </ItemDefinitionGroup>
 
-  <Target Name="Sign" DependsOnTargets="_Sign;PrepareLocalDrop">
+  <Target Name="Sign" DependsOnTargets="_Sign;_Publish">
     
   </Target>
   
