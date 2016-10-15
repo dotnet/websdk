@@ -123,7 +123,7 @@
     <GenerateSemaphore Parameters="@(SemaphoreParameter)" SemaphoreFilePath="$(WebSdkSemaphorePath)" />
 
     <ItemGroup>
-      <SignedPackages Include="$(CodeSignOutputPath)\*.nupkg" />
+      <SignedPackages Include="$(CodeSignOutputPath)\Packages\*.nupkg" />
     </ItemGroup>
 
     <Exec Command="$(NugetExe) %(SignedPackages.Identity) $(MyGetSecurityToken) -Source https://dotnet.myget.org/F/dotnet-web/api/v2/package" Condition="'$(MyGetSecurityToken)' != ''" />   
