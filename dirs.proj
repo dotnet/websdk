@@ -82,7 +82,6 @@
       (final release builds, should provide final versions (not pre-release ones))
     -->
     <PropertyGroup>
-      <BUILD_NUMBER>100</BUILD_NUMBER>
       <WebSdkBuildVersion Condition="'$(WebSdkVersion)' == ''">$(CoreSdkBuildVersion)</WebSdkBuildVersion>
       <CiBuildPostfix Condition="'$(BUILD_NUMBER)' != ''">-$(BUILD_NUMBER)</CiBuildPostfix>
       <WebSdkVersion Condition="'$(WebSdkVersion)' == ''">$(VersionPrefix)-$(VersionPrereleasePrefix)-$(WebSdkBuildVersion)$(CiBuildPostfix)</WebSdkVersion>
