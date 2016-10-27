@@ -39,6 +39,11 @@ Copyright (c) .NET Foundation. All rights reserved.
   <!-- Globbing patterns to include relevant files to web projects -->
 
   <!-- Core web globbing patterns -->
+
+  <PropertyGroup>
+    <DefaultWebRemoves>wwwroot\**;node_modules\**;jspm_packages\**</DefaultWebRemoves>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Include="wwwroot\**">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -51,8 +56,11 @@ Copyright (c) .NET Foundation. All rights reserved.
     </Content>
     <Content Include="**\web.debug.config" Exclude="wwwroot\**\web.debug.config"/>
     <Content Include="**\web.release.config" Exclude="wwwroot\**\web.release.config"/>
-    <Compile Remove="wwwroot\**\*.cs"/>
-    <EmbeddedResource Remove="wwwroot\**\*.resx"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(DisableDefaultWebRemoves)' != 'true'">
+    <Compile Remove="$(DefaultWebRemoves)" />
+    <EmbeddedResource Remove="$(DefaultWebRemoves)" />
   </ItemGroup>
 
   <!-- Publishing configuration files -->
