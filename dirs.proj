@@ -22,7 +22,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectFiles Include="src\Publish\Microsoft.NET.Sdk.Publish.Tasks\Microsoft.NET.Sdk.Publish.Tasks.csproj" />
     <ProjectFiles Include="src\Publish\Microsoft.NET.Sdk.Publish.Package\Microsoft.NET.Sdk.Publish.Package.csproj" />
     <ProjectFiles Include="src\Web\Microsoft.NET.Sdk.Web.ProjectSystem.Package\Microsoft.NET.Sdk.Web.ProjectSystem.Package.csproj" />
     <ProjectFiles Include="src\Web\Microsoft.NET.Sdk.Web.Package\Microsoft.NET.Sdk.Web.Package.csproj" />
