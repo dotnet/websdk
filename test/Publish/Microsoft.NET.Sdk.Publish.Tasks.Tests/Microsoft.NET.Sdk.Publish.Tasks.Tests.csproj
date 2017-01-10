@@ -22,16 +22,18 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
     <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20161216-01" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.298-preview5" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.298-preview5" />
+    <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000503-01" />
     <PackageReference Include="xunit" Version="2.2.0-beta4-build3444" />
     <PackageReference Include="xunit.runner.VisualStudio" Version="2.2.0-beta4-build1194" />
     <ProjectReference Include="..\..\..\src\Publish\Microsoft.NETCore.Sdk.Publish.Tasks\Microsoft.NETCore.Sdk.Publish.Tasks.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20161216-01" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.298-preview5" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.298-preview5" />
+    <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000503-01" />
     <PackageReference Include="xunit" Version="2.2.0-beta4-build3444" />
     <PackageReference Include="xunit.runner.VisualStudio" Version="2.2.0-beta4-build1194" />
     <Reference Include="System" />

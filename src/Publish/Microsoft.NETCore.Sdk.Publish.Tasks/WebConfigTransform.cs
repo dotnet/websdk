@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Build.Construction;
 
 namespace Microsoft.NET.Sdk.Publish.Tasks
 {
@@ -173,6 +174,59 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
             }
 
             return document;
+        }
+
+        public static string GetProjectGuidFromSolutionFile(string solutionFileFullPath, string projectFileFullPath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(solutionFileFullPath) && File.Exists(solutionFileFullPath))
+                {
+                    return GetProjectGuid(solutionFileFullPath, projectFileFullPath);
+                }
+
+                int parentLevelsToSearch = 5;
+                string solutionDirectory = Path.GetDirectoryName(projectFileFullPath);
+
+                while (parentLevelsToSearch-- > 0)
+                {
+                    if (string.IsNullOrEmpty(solutionDirectory) || !Directory.Exists(solutionDirectory))
+                    {
+                        return null;
+                    }
+
+                    IEnumerable<string> solutionFiles = Directory.EnumerateFiles(solutionDirectory, "*.sln", SearchOption.TopDirectoryOnly);
+                    foreach (string solutionFile in solutionFiles)
+                    {
+                        string projectGuid = GetProjectGuid(solutionFile, projectFileFullPath);
+                        if (!string.IsNullOrEmpty(projectGuid))
+                        {
+                            return projectGuid;
+                        }
+                    }
+
+                    solutionDirectory = Directory.GetParent(solutionDirectory)?.FullName;
+                }
+            }
+            catch
+            {
+                // This code path is only used for telemetry.
+            }
+
+            return null;
+        }
+
+        private static string GetProjectGuid(string solutionFileFullPath, string projectFileFullPath)
+        {
+            SolutionFile file = SolutionFile.Parse(solutionFileFullPath);
+            IReadOnlyList<ProjectInSolution> allProjectsInSolution = file.ProjectsInOrder;
+            ProjectInSolution project = allProjectsInSolution?.FirstOrDefault((proj) => string.Equals(proj.AbsolutePath, projectFileFullPath, StringComparison.OrdinalIgnoreCase));
+            if (project != null)
+            {
+                return project.ProjectGuid;
+            }
+
+            return null;
         }
     }
 }

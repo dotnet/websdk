@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
     <AssemblyName>Microsoft.NETCore.Sdk.Publish.Tasks</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -17,8 +17,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6.0" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.298-preview5" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.298-preview5" />
+    <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000503-01" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000503-01" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 </Project>
