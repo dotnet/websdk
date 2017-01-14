@@ -23,17 +23,19 @@ Copyright (c) .NET Foundation. All rights reserved.
   <ItemGroup Condition=" '$(EnableDefaultItems)' == 'true' And '$(EnableDefaultContentItems)' == 'true' ">
     <!-- Publish everything under wwwroot, all JSON files, all web.config files and all Razor files -->
     <Content Include="wwwroot/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Content Include="**/web.config" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**" />
-    <Content Include="**/*.cshtml" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**" />
-    <Content Include="**/*.json" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**" />
+    <Content Include="Views/**" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Content Include="**/web.config" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**;Views/**" />
+    <Content Include="**/*.cshtml" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**;Views/**" />
+    <Content Include="**/*.json" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);wwwroot/**;Views/**" />
 
     <!-- Set CopyToPublishDirectory to Never for items under AppDesignerFolder ("Properties", by default) to avoid publishing launchSettings.json -->
     <Content Update="$(AppDesignerFolder)/**" CopyToPublishDirectory="Never" Condition="'$(AppDesignerFolder)' != ''"/>
     
     <!-- Remove Content items from other item types (in a way that CPS understands) -->
-    <None Remove="wwwroot/**;**/*.json;**/web.config;**/*.cshtml" />
-    <Compile Remove="wwwroot/**" />
-    <EmbeddedResource Remove="wwwroot/**" />
+    <None Remove="wwwroot/**;Views/**;**/*.json;**/web.config" />
+    <None Remove="**/*.cshtml" />
+    <Compile Remove="wwwroot/**;Views/**" />
+    <EmbeddedResource Remove="wwwroot/**;Views/**" />
 
   </ItemGroup>
 
