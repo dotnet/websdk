@@ -163,6 +163,7 @@
     </Task>
   </UsingTask>
 
-  <Import Project="$(WebSdkTools)\MIcrosoft.NET.Sdk.Web.Sign.targets" Condition="Exists('$(WebSdkTools)\MIcrosoft.NET.Sdk.Web.Sign.targets')"/>
+  <Target Name="Sign" />
 
+  <Import Project="$(WebSdkTools)\MIcrosoft.NET.Sdk.Web.Sign.targets" Condition="Exists('$(WebSdkTools)\MIcrosoft.NET.Sdk.Web.Sign.targets')"/>
 </Project>
