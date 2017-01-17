@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Build.Framework;
@@ -45,6 +46,10 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
         /// </summary>
         public bool IgnoreProjectGuid { get; set; }
 
+        public string ProjectFullPath { get; set; }
+
+        public string SolutionPath { get; set; }
+
         public override bool Execute()
         {
             Log.LogMessage(MessageImportance.Low, $"Configuring the following project for use with IIS: '{PublishDir}'");
@@ -73,6 +78,12 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
 
             string outputFile = Path.GetFileName(TargetPath);
             XDocument transformedConfig = WebConfigTransform.Transform(webConfigXml, outputFile, IsAzure, IsPortable);
+
+            if (string.IsNullOrEmpty(ProjectGuid) && !IgnoreProjectGuid)
+            {
+                // if the ProjectGuid is not available, get the ProjectGuid from the Solution file.
+                ProjectGuid = WebConfigTransform.GetProjectGuidFromSolutionFile(SolutionPath, ProjectFullPath);
+            }
 
             // Add the projectGuid to web.config if it is not present.
             transformedConfig = WebConfigTransform.AddProjectGuidToWebConfig(transformedConfig, ProjectGuid, IgnoreProjectGuid);

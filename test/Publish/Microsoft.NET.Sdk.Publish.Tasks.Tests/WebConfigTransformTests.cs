@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.NET.Sdk.Publish.Tasks;
+using System;
+using System.IO;
 
 // Copied from https://raw.githubusercontent.com/aspnet/IISIntegration/50f066579a96c6f2b2a4c47524c684e1ef3dfdf0/test/Microsoft.AspNetCore.Server.IISIntegration.Tools.Tests/WebConfigTransformFacts.cs
 
@@ -325,6 +327,61 @@ namespace Microsoft.Net.Sdk.Publish.Tasks.Tests
 
             // Assert
             Assert.True(XNode.DeepEquals(WebConfigTemplate, transformedWebConfigWithGuid));
+        }
+
+        [Fact]
+        public void WebConfigTransform_Finds_ProjectGuid_IfSolutionPathIsPassed()
+        {
+            // Arrange
+            string solutionFileFullPath = GetSolutionFileFullPath();
+            string projectFullPath = GetTestProjectsFullPath();
+
+            // Act
+            string projectGuid = WebConfigTransform.GetProjectGuidFromSolutionFile(solutionFileFullPath, projectFullPath);
+
+            // Assert
+            Assert.Equal<string>("{66964EC2-712A-451A-AB4F-33F18D8F54F1}", projectGuid);
+        }
+
+        [Theory]
+        [InlineData("*UnDefined*")]
+        [InlineData("")]
+        [InlineData(@"c:\AFolderThatDoesNotExist")]
+        public void WebConfigTransform_Finds_ProjectGuid_IfProjectPathIsPassed(string solutionFilePath)
+        {
+            // Arrange
+            string projectFullPath = GetTestProjectsFullPath();
+
+            // Act
+            string projectGuid = WebConfigTransform.GetProjectGuidFromSolutionFile(solutionFilePath, projectFullPath);
+
+            // Assert
+            Assert.Equal<string>("{66964EC2-712A-451A-AB4F-33F18D8F54F1}", projectGuid);
+        }
+
+
+        private string GetSolutionFileFullPath()
+        {
+            DirectoryInfo current = new DirectoryInfo(AppContext.BaseDirectory);
+            string solutionFullPath = null;
+            while (current != null)
+            {
+                solutionFullPath = Path.Combine(current.FullName, "Microsoft.NET.Sdk.Web.sln");
+                if (File.Exists(solutionFullPath))
+                {
+                    break;
+                }
+
+                current = current.Parent;
+            }
+
+            return solutionFullPath;
+        }
+
+        private string GetTestProjectsFullPath()
+        {
+            string solutionFileFullPath = GetSolutionFileFullPath();
+            return Path.Combine(Path.GetDirectoryName(solutionFileFullPath), "test", "publish", "Microsoft.NET.Sdk.Publish.Tasks.Tests", "Microsoft.NET.Sdk.Publish.Tasks.Tests.csproj");
         }
     }
 }
