@@ -16,6 +16,8 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
         [Required]
         public ITaskItem[] EFMigrations { get; set; }
         public string EFSQLScriptsFolderName { get; set; }
+        public string EFMigrationsAdditionalArgs { get; set; }
+
         [Output]
         public ITaskItem[] EFSQLScripts { get; set; }
 
@@ -70,7 +72,7 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
         {
             string previousValue = Environment.GetEnvironmentVariable("DOTNET_SKIP_FIRST_TIME_EXPERIENCE");
             Environment.SetEnvironmentVariable("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true");
-            ProcessStartInfo psi = new ProcessStartInfo("dotnet", string.Format("ef migrations script --idempotent --output \"{0}\" --context {1}", sqlFileFullPath, dbContextName))
+            ProcessStartInfo psi = new ProcessStartInfo("dotnet", string.Format("ef migrations script --idempotent --output \"{0}\" --context {1} {2}", sqlFileFullPath, dbContextName, EFMigrationsAdditionalArgs))
             {
                 WorkingDirectory = ProjectDirectory,
                 CreateNoWindow = true,
