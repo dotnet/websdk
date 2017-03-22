@@ -15,7 +15,7 @@ Copyright (c) .NET Foundation. All rights reserved.
     <DefaultItemExcludes>$(DefaultItemExcludes);**/node_modules/**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**/jspm_packages/**</DefaultItemExcludes>
     <DefaultItemExcludes>$(DefaultItemExcludes);**/bower_components/**</DefaultItemExcludes>
-    <DefaultJsonExcludes>**/tsconfig.json;**/jsconfig.json;**/package.json;**/tsd.json;**/bower.json</DefaultJsonExcludes>
+    <DefaultJsonExcludes>**/tsconfig.json;**/jsconfig.json;**/package.json;**/tsd.json;**/bower.json;**/typings.json;**/coffeelint.json;**/tslint.json</DefaultJsonExcludes>
     <OutputType>Exe</OutputType>
     <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
     <DebugType Condition="'$(DebugType)' == ''">pdbonly</DebugType>
@@ -35,7 +35,7 @@ Copyright (c) .NET Foundation. All rights reserved.
     
     <!-- Remove Content items from other item types (in a way that CPS understands) -->
     <None Remove="wwwroot/**;**/*.json;**/web.config;**/*.cshtml" />
-    <None Include="**/tsconfig.json;**/jsconfig.json;**/package.json;**/tsd.json;**/bower.json" />
+    <None Include="$(DefaultJsonExcludes)" />
     <Compile Remove="wwwroot/**" />
     <EmbeddedResource Remove="wwwroot/**" />
 
