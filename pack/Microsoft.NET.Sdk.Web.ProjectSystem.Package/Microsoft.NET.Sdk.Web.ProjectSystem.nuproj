@@ -6,11 +6,18 @@
     <NuSpecFile>$(MSBuildProjectName).nuspec</NuSpecFile>
     <OutputPath>$(WebSdkRoot)\bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>$(WebSdkRoot)\obj\$(Configuration)\</IntermediateOutputPath>
+	<RuntimeIdenfier Condition="'$(RuntimeIdenfier)' == ''">win7-x86</RuntimeIdenfier>
     <CurrentDate Condition="'$(CurrentDate)'==''">-$([System.DateTime]::Now.ToString(yyyyMMdd))</CurrentDate>
     <WebSdkVersion Condition="'$(WebSdkVersion)' ==''">1.0.0-rel$(CurrentDate)-1</WebSdkVersion>
     <NuSpecProperties>CoreSdkVersion=$(CoreSdkVersion);WebSdkVersion=$(WebSdkVersion)</NuSpecProperties>
   </PropertyGroup>
   <ItemGroup>
+    <NuGetContent Include="$(WebSdkRoot)\bin\$(Configuration)\net46\$(RuntimeIdenfier)\Microsoft.NET.Sdk.Web.ProjectSystem.Tasks.dll" >
+      <Destination>tools\net46</Destination>
+    </NuGetContent>  
+    <NuGetContent Include="$(WebSdkRoot)\bin\$(Configuration)\netstandard1.3\Microsoft.NET.Sdk.Web.ProjectSystem.Tasks.dll" >
+      <Destination>tools\netstandard1.0</Destination>
+    </NuGetContent>  
     <NuGetContent Include="$(WebSdkSource)\ProjectSystem\Microsoft.NET.Sdk.Web.ProjectSystem.Targets\netstandard1.0\Microsoft.NET.Sdk.Web.ProjectSystem.props">
       <Destination>build\netstandard1.0</Destination>
     </NuGetContent>
