@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net46;netcoreapp1.0</TargetFrameworks>
+    <AssemblyName>Microsoft.NET.Sdk.Web.ProjectSystem.Tasks.Tests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\test\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\..\test\obj\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>..\..\..\test\bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\..\test\obj\Release\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170210-02" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.298-preview5" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.298-preview5" />
+    <PackageReference Include="xunit" Version="2.2.0-rc2-build3523" />
+    <PackageReference Include="xunit.runner.VisualStudio" Version="2.2.0-rc2-build1249" />
+    <PackageReference Include="Moq" Version="4.7.8" />
+    <Compile Remove="EndToEnd\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170210-02" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.298-preview5" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.298-preview5" />
+    <PackageReference Include="xunit" Version="2.2.0-rc2-build3523 " />
+    <PackageReference Include="xunit.runner.VisualStudio" Version="2.2.0-rc2-build1249" />
+    <PackageReference Include="Moq" Version="4.7.8" />
+    <Reference Include="System" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Management" />
+    <Compile Condition="$(EndToEndTestsEnabled) != 'true'" Remove="EndToEnd\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\ProjectSystem\Microsoft.NET.Sdk.Web.ProjectSystem.Tasks\Microsoft.NET.Sdk.Web.ProjectSystem.Tasks.csproj" />
+  </ItemGroup>
+</Project>

@@ -43,4 +43,27 @@ Copyright (c) .NET Foundation. All rights reserved.
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
   </ItemGroup>
+
+  <!-- 
+    Build level validation of web specific files, that can not be validated by schema or language services
+  -->
+  
+  <PropertyGroup>
+    <_WebProjectFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netstandard1.0</_WebProjectFramework>
+    <_WebProjectFramework Condition=" '$(_WebProjectFramework)' == ''">net46</_WebProjectFramework>
+    <_WebProjectSystemTasksDir Condition=" '$(_WebProjectSystemTasksDir)'=='' ">$(MSBuildThisFileDirectory)..\..\tools\$(_WebProjectFramework)\</_WebProjectSystemTasksDir>
+    <_WebTaskAssemblyFullPath Condition=" '$(_WebTaskAssemblyFullPath)'=='' ">$(_WebProjectSystemTasksDir)Microsoft.NET.Sdk.Web.ProjectSystem.Tasks.dll</_WebTaskAssemblyFullPath>
+    <EnableWebConfigValidation Condition=" '$(EnableWebConfigValidation)'=='' ">true</EnableWebConfigValidation>
+    <_ObsoleteWebConfigElements Condition=" '$(_ObsoleteWebConfigElements)'=='' ">appSettings;connectionStrings</_ObsoleteWebConfigElements>
+</PropertyGroup>
+  
+  <!-- WebConfig validation, happens after build. -->
+  <UsingTask TaskName="ValidateWebConfig" AssemblyFile="$(_WebTaskAssemblyFullPath)" />
+
+  <Target Name="_ValidateWebConfig" AfterTargets="Build" Condition=" '$(EnableWebConfigValidation)'=='true' ">
+    <ValidateWebConfig
+      ProjectFullPath="$(MSBuildProjectFullPath)"
+      ObsoleteWebConfigElements="$(_ObsoleteWebConfigElements)"/>
+  </Target>
+  
 </Project>
