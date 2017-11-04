@@ -22,9 +22,11 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
         public const string DotNetNewAdditionalArgs = "";
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core")]
-        [InlineData("netcoreapp2.0", "Debug", "core")]
-        public async Task EmptyWebCore(string templateFramework, string configuration, string msBuildType)
+        [InlineData("netcoreapp2.0", "Release", "core", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", ".fsproj")]
+        public async Task EmptyWebCore(string templateFramework, string configuration, string msBuildType, string projectType)
         {
             string projectName = $"{nameof(EmptyWebCore)}_{Path.GetRandomFileName()}";
 
@@ -36,16 +38,18 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType);
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType);
 
             Assert.Equal($"Hello World!", resultText);
         }
 
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core")]
-        [InlineData("netcoreapp2.0", "Debug", "core")]
-        public async Task WebAPICore(string templateFramework, string configuration, string msBuildType)
+        [InlineData("netcoreapp2.0", "Release", "core", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", ".fsproj")]
+        public async Task WebAPICore(string templateFramework, string configuration, string msBuildType, string projectType)
         {
             string projectName = $"{nameof(WebAPICore)}_{Path.GetRandomFileName()}";
 
@@ -56,19 +60,25 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType, isStandAlone:false, resultUrl:"http://localhost:5000/api/Values");
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType, isStandAlone:false, resultUrl:"http://localhost:5000/api/Values");
 
             Assert.Equal(resultText, "[\"value1\",\"value2\"]");
         }
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core", "none", "false")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false")]
-        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false")]
-        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true")]
-        public async Task MvcCore(string templateFramework, string configuration, string msBuildType, string auth, string useLocalDB)
+        [InlineData("netcoreapp2.0", "Release", "core", "none", "false", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "none", "false", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", ".fsproj")]
+        public async Task MvcCore(string templateFramework, string configuration, string msBuildType, string auth, string useLocalDB, string projectType)
         {
             string projectName = $"{nameof(MvcCore)}_{Path.GetRandomFileName()}";
 
@@ -85,7 +95,7 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType);
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType);
 
             Assert.Contains($"<title>Home Page -", resultText);
         }
@@ -114,18 +124,24 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType);
+            // No F# support for Razor projects.
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, ".csproj", configuration, msBuildType);
 
             Assert.Contains($"<title>Home page -", resultText);
         }
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core", "net461")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "net461")]
-
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".fsproj")]
         //[InlineData("netcoreapp2.0", "Release", "core", "net462")]
         //[InlineData("netcoreapp2.0", "Debug", "core", "net462")]
-        public async Task EmptyWebNET(string templateFramework, string configuration, string msBuildType, string targetFramework)
+        public async Task EmptyWebNET(string templateFramework, string configuration, string msBuildType, string targetFramework, string projectType)
         {
             string projectName = $"{nameof(EmptyWebNET)}_{Path.GetRandomFileName()}";
 
@@ -137,18 +153,19 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType, isStandAlone:true);
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType, isStandAlone:true);
 
             Assert.Equal($"Hello World!", resultText);
         }
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core", "net461")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "net461")]
-
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", "csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "net461", "fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "net461", ".fsproj")]
         //[InlineData("netcoreapp2.0", "Release", "core", "net462")]
         //[InlineData("netcoreapp2.0", "Debug", "core", "net462")]
-        public async Task WebAPINET(string templateFramework, string configuration, string msBuildType, string targetFramework)
+        public async Task WebAPINET(string templateFramework, string configuration, string msBuildType, string targetFramework, string projectType)
         {
             string projectName = $"{nameof(WebAPINET)}_{Path.GetRandomFileName()}";
 
@@ -159,18 +176,24 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType, isStandAlone:true, resultUrl: "http://localhost:5000/api/Values");
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType, isStandAlone:true, resultUrl: "http://localhost:5000/api/Values");
 
             Assert.Equal(resultText, "[\"value1\",\"value2\"]");
         }
 
         [Theory]
-        [InlineData("netcoreapp2.0", "Release", "core", "none", "false", "net461")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false", "net461")]
-        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false", "net461")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", "net461")]
-        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", "net461")]
-        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", "net461")]
+        [InlineData("netcoreapp2.0", "Release", "core", "none", "false", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", "net461", ".csproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "none", "false", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "none", "false", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "false", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", "net461", ".fsproj")]
+        [InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", "net461", ".fsproj")]
 
         //[InlineData("netcoreapp2.0", "Release", "core", "none", "false", "net462")]
         //[InlineData("netcoreapp2.0", "Debug", "core", "none", "false", "net462")]
@@ -178,7 +201,7 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
         //[InlineData("netcoreapp2.0", "Debug", "core", "Individual", "false", "net462")]
         //[InlineData("netcoreapp2.0", "Release", "core", "Individual", "true", "net462")]
         //[InlineData("netcoreapp2.0", "Debug", "core", "Individual", "true", "net462")]
-        public async Task MvcNET(string templateFramework, string configuration, string msBuildType, string auth, string useLocalDB, string targetFramework)
+        public async Task MvcNET(string templateFramework, string configuration, string msBuildType, string auth, string useLocalDB, string targetFramework, string projectType)
         {
             string projectName = $"{nameof(MvcNET)}_{Path.GetRandomFileName()}";
 
@@ -195,7 +218,7 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType, isStandAlone:true);
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, projectType, configuration, msBuildType, isStandAlone:true);
 
             Assert.Contains($"<title>Home Page -", resultText);
         }
@@ -231,12 +254,13 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
             Assert.True(exitCode.HasValue && exitCode.Value == 0);
 
-            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, configuration, msBuildType, isStandAlone: true);
+            // No F# support for Razor pages.
+            string resultText = await RestoreBuildPublishAndRun(testFolder, projectName, ".csproj", configuration, msBuildType, isStandAlone: true);
 
             Assert.Contains($"<title>Home page -", resultText);
         }
 
-        private async Task<string> RestoreBuildPublishAndRun(string testFolder, string projectName, string configuration, string msBuildType, bool isStandAlone = false, string resultUrl = "http://localhost:5000")
+        private async Task<string> RestoreBuildPublishAndRun(string testFolder, string projectName, string projectType, string configuration, string msBuildType, bool isStandAlone = false, string resultUrl = "http://localhost:5000")
         {
             int? runningProcess = null;
             HttpResponseMessage result = null;
@@ -257,7 +281,7 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
                 // msbuild publish
                 string fileName = "msbuild";
                 string publishOutputFolder = $"bin\\{configuration}\\PublishOutput";
-                string dotnetPublishArguments = $"{projectName}.csproj /p:DeployOnBuild=true /p:Configuration={configuration} /p:PublishUrl={publishOutputFolder}";
+                string dotnetPublishArguments = $"{projectName}.{projectType} /p:DeployOnBuild=true /p:Configuration={configuration} /p:PublishUrl={publishOutputFolder}";
                 if (string.Equals(msBuildType, "core"))
                 {
                     dotnetPublishArguments = $"{fileName} {dotnetPublishArguments}";
