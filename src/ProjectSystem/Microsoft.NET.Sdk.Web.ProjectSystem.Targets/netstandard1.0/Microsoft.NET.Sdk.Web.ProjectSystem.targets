@@ -6,10 +6,11 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
           created a backup copy.  Incorrect changes to this file will make it
           impossible to load or build your projects from the command-line or the IDE.
 
-Copyright (c) .NET Foundation. All rights reserved. 
+Copyright (c) .NET Foundation. All rights reserved.
 ***********************************************************************************************
 -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         InitialTargets="UpdateWarningsAsErrorsForAllMetapackage">
 
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets"
           Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets') AND '$(EnableTypeScriptNuGetTarget)' != 'true'"/>
@@ -45,4 +46,10 @@ Copyright (c) .NET Foundation. All rights reserved.
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
   </ItemGroup>
+
+  <Target Name="UpdateWarningsAsErrorsForAllMetapackage">
+    <PropertyGroup>
+      <WarningsAsErrors Condition="'%(PackageReference.Identity)' == 'Microsoft.AspNetCore.All'">$(WarningsAsErrors);NU1608</WarningsAsErrors>
+    </PropertyGroup>
+  </Target>
 </Project>
