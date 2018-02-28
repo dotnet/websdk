@@ -10,12 +10,8 @@ Copyright (c) .NET Foundation. All rights reserved.
 ***********************************************************************************************
 -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!--
+    <!--
       Indicate to other targets that Microsoft.NET.Sdk.Web is being used.
-      This must be set here (as early as possible, before Microsoft.Common.props)
-      so that everything that follows can depend on it.
-      In particular, Directory.Build.props and nuget package props need to be able
-      to use this flag and they are imported by Microsoft.Common.props.
     -->
     <UsingMicrosoftNETSdkWeb>true</UsingMicrosoftNETSdkWeb>
   </PropertyGroup>
