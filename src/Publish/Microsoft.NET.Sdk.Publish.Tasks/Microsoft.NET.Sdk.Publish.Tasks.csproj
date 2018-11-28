@@ -4,15 +4,17 @@
     <WebSdkRoot Condition="'$(WebSdkRoot)' == ''">..\..\..\</WebSdkRoot>
   </PropertyGroup>
 
-  <Import Project="$(WebSdkRoot)\build\Version.props" />
+<!--  <Import Project="$(WebSdkRoot)\build\Version.props" /> -->
+  
 
   <PropertyGroup>
     <TargetFrameworks>net46;netcoreapp2.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(DotNetBuildFromSource)' == 'true' ">netcoreapp2.0</TargetFrameworks>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>$(WebSdkRoot)\bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(WebSdkRoot)\obj\$(Configuration)\</IntermediateOutputPath>
+<!--    <OutputPath>$(WebSdkRoot)\bin\$(Configuration)\</OutputPath> -->
+<!--    <IntermediateOutputPath>$(WebSdkRoot)\obj\$(Configuration)\</IntermediateOutputPath> -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+<!--    <IsPackable>true</IsPackable> -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
@@ -54,4 +56,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Import Project="$(RepositoryEngineeringDir)\Package.props" />
 </Project>

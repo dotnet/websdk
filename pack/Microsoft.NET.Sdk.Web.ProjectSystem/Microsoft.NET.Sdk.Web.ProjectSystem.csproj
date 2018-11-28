@@ -5,12 +5,9 @@
     <WebSdkSource Condition="'$(WebSdkSource)' ==''">$(WebSdkRoot)src\</WebSdkSource>
   </PropertyGroup>
 
-  <Import Project="$(WebSdkRoot)\build\Version.props" />
-
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <OutputPath>$(WebSdkRoot)\bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(WebSdkRoot)\obj\$(Configuration)\</IntermediateOutputPath>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,19 +5,15 @@
     <WebSdkSource Condition="'$(WebSdkSource)' ==''">$(WebSdkRoot)src\</WebSdkSource>
   </PropertyGroup>
 
-  <Import Project="$(WebSdkRoot)\build\Version.props" />
+  <Import Project="$(RepositoryEngineeringDir)\Package.props" />
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <OutputType>library</OutputType>
-    <OutputPath>$(WebSdkRoot)\bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(WebSdkRoot)\obj\$(Configuration)\</IntermediateOutputPath>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Web.ProjectSystem" Version="$(PackageVersion)" />
-    <PackageReference Include="Microsoft.NET.Sdk.Publish" Version="$(PackageVersion)" />
-
     <Content Include="$(WebSdkSource)\Web\Microsoft.NET.Sdk.Web.Targets\*.props">
       <Pack>true</Pack>
       <PackagePath>Sdk</PackagePath>
@@ -28,4 +24,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.NET.Sdk.Web.ProjectSystem\Microsoft.NET.Sdk.Web.ProjectSystem.csproj" />
+    <ProjectReference Include="..\Microsoft.NET.Sdk.Publish\Microsoft.NET.Sdk.Publish.csproj" />
+  </ItemGroup>
 </Project>
