@@ -1,7 +1,7 @@
 variables:
   Build.Repository.Clean: true
-#  _HelixType: build/product
-#  _HelixSource: pr/dotnet/arcade-minimalci-sample/$(Build.SourceBranch)
+  _HelixType: build/product
+  _HelixSource: pr/aspnet/websdk/$(Build.SourceBranch)
  
 resources:
   containers:
