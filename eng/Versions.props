@@ -8,8 +8,8 @@
     <RestoreSources>
       $(RestoreSources);
       https://dotnet.myget.org/F/dotnet-core/api/v3/index.json;
-      https://dotnet.myget.org/F/msbuild/api/v3/index.json
-      https://www.myget.org/F/nugetbuild/api/v3/index.json
+      https://dotnet.myget.org/F/msbuild/api/v3/index.json;
+      https://www.myget.org/F/nugetbuild/api/v3/index.json;
       https://dotnet.myget.org/F/dotnet-web/api/v3/index.json
     </RestoreSources>
   </PropertyGroup>
