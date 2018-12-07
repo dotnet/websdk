@@ -19,6 +19,7 @@ jobs:
     enablePublishTestResults: true
     enablePublishBuildAssets: true
     enableTelemetry: true
+    helixRepo: aspnet/websdk
     jobs:
     - job: Windows_NT
       pool:
