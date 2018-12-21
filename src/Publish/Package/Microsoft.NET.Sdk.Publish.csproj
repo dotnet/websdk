@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PublishRoot Condition="'$(PublishRoot)' == ''">..\</PublishRoot>
@@ -43,7 +43,7 @@
 
     <Content Include="$(PublishRoot)\Targets\netstandard1.0\**\*.*">
       <Pack>true</Pack>
-      <PackagePath>build\netstandard1.0\%(RecursiveDir)</PackagePath>
+      <PackagePath>build\netstandard1.0</PackagePath>
     </Content>
 
     <Content Include="$(PublishRoot)\Targets\Sdk.*">
