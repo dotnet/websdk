@@ -157,10 +157,10 @@ namespace Microsoft.NET.Sdk.Publish.Tasks
                         {
                             throw new Exception(Resources.WebConfigTransform_InvalidHostingOption);
                         }
-                        aspNetCoreElement.SetAttributeValue("hostingModel", aspNetCoreHostingModel);
+                        aspNetCoreElement.SetAttributeValue("hostingModel", aspNetCoreHostingModel.ToLowerInvariant());
                         break;
                     case "OUTOFPROCESS":
-                        aspNetCoreElement.SetAttributeValue("hostingModel", aspNetCoreHostingModel);
+                        aspNetCoreElement.SetAttributeValue("hostingModel", aspNetCoreHostingModel.ToLowerInvariant());
                         break;
                     default:
                         throw new Exception(Resources.WebConfigTransform_HostingModel_Error);
