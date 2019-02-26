@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <WorkerRoot Condition="'$(WorkerRoot)' == ''">$(RepoRoot)\src\Worker\</WorkerRoot>
+  </PropertyGroup>
+
+  <Import Project="$(RepositoryEngineeringDir)\Package.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(WorkerRoot)\Targets\netstandard1.0\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>build\netstandard1.0</PackagePath>
+    </Content>
+
+    <Content Include="$(WorkerRoot)\Targets\Sdk.*">
+      <PackagePath>Sdk</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>
