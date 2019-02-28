@@ -18,8 +18,8 @@
     </Content>
 
     <Content Include="$(ProjectSystemRoot)\Targets\Sdk.*">
-      <PackagePath>Sdk</PackagePath>
       <Pack>true</Pack>
+      <PackagePath>Sdk</PackagePath>
     </Content>
   </ItemGroup>
 
