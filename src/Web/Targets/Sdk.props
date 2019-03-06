@@ -33,5 +33,9 @@ Copyright (c) .NET Foundation. All rights reserved.
   <ItemGroup Condition="'$(DisableImplicitFrameworkReferences)' != 'true' And '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" IsImplicitlyDefined="true" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(DisableImplicitAspNetCoreAnalyzers)' != 'true' And '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0'">
+    <Analyzer Include="$(MSBuildThisFileDirectory)..\analyzers\cs\*.dll" Condition="'$(Language)'=='C#'" IsImplicitlyDefined="true" />
+  </ItemGroup>
   
 </Project>
