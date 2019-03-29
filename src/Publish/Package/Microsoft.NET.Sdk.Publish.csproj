@@ -46,7 +46,7 @@
       <PackagePath>build\netstandard1.0</PackagePath>
     </Content>
 
-    <Content Include="$(PublishRoot)\Targets\Sdk.*">
+    <Content Include="$(PublishRoot)\Targets\Sdk.*;$(PublishRoot)\Targets\ImportPublishProfile.targets">
       <Pack>true</Pack>
       <PackagePath>Sdk</PackagePath>
     </Content>
