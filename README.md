@@ -1,6 +1,6 @@
 Build Status
 
-|Windows, Mac & Linux|
+|Windows, Mac & Linux|  
 |:------:|
 [![Build Status](https://dnceng.visualstudio.com/public/_apis/build/status/aspnet/websdk/websdk-ci?branchName=master)](https://dnceng.visualstudio.com/public/_build/latest?definitionId=266?branchName=master)
 
