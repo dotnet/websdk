@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.AspNetCore.Analyzers" Version="3.0.0-rc1.19453.1">
+    <Dependency Name="Microsoft.AspNetCore.Analyzers" Version="3.0.0-rc1.19454.1">
       <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>0abe61f391b30219ce5983b9a2964c1d85665449</Sha>
+      <Sha>834e316f7a51971b87880a0b148c2f54f11f9706</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Components.Analyzers" Version="3.0.0-rc1.19453.1">
+    <Dependency Name="Microsoft.AspNetCore.Components.Analyzers" Version="3.0.0-rc1.19454.1">
       <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>0abe61f391b30219ce5983b9a2964c1d85665449</Sha>
+      <Sha>834e316f7a51971b87880a0b148c2f54f11f9706</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Mvc.Analyzers" Version="3.0.0-rc1.19453.1">
+    <Dependency Name="Microsoft.AspNetCore.Mvc.Analyzers" Version="3.0.0-rc1.19454.1">
       <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>0abe61f391b30219ce5983b9a2964c1d85665449</Sha>
+      <Sha>834e316f7a51971b87880a0b148c2f54f11f9706</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="3.0.0-rc1.19453.1">
+    <Dependency Name="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="3.0.0-rc1.19454.1">
       <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>0abe61f391b30219ce5983b9a2964c1d85665449</Sha>
+      <Sha>834e316f7a51971b87880a0b148c2f54f11f9706</Sha>
     </Dependency>
     <Dependency Name="Microsoft.Web.Xdt" Version="3.0.0" Pinned="true">
       <Uri>https://github.com/aspnet/xdt</Uri>
