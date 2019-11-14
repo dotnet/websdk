@@ -12,6 +12,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RuntimeIdenfier Condition="'$(RuntimeIdenfier)' == ''">win7-x86</RuntimeIdenfier>
     <IsPackable>true</IsPackable>
+    <IsShipping>false</IsShipping>
   </PropertyGroup>
 
   <ItemGroup>
