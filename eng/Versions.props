@@ -21,7 +21,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <VersionPrefix>3.1.100</VersionPrefix>
-    <PreReleaseVersionLabel>preview3</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreSources>
