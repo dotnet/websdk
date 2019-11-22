@@ -20,8 +20,8 @@
     <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.0-rtm.19571.5</MicrosoftAspNetCoreAnalyzersPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>3.1.100</VersionPrefix>
-    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
+    <VersionPrefix>3.1.200</VersionPrefix>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreSources>
