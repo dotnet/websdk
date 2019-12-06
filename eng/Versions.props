@@ -21,7 +21,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <VersionPrefix>3.1.200</VersionPrefix>
-    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreSources>
