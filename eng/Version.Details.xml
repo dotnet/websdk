@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.AspNetCore.Analyzers" Version="3.0.2-servicing.19569.3">
-      <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>7891c8318f1026deb1c96054eebead058bb4f50f</Sha>
+    <Dependency Name="Microsoft.AspNetCore.Analyzers" Version="3.0.2-servicing.19611.6">
+      <Uri>https://dev.azure.com/dnceng/internal/_git/aspnet-AspNetCore</Uri>
+      <Sha>bcc9ca306c326a9fc9a2ba4277f973f9eeca0731</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Components.Analyzers" Version="3.0.2-servicing.19569.3">
-      <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>7891c8318f1026deb1c96054eebead058bb4f50f</Sha>
+    <Dependency Name="Microsoft.AspNetCore.Components.Analyzers" Version="3.0.2-servicing.19611.6">
+      <Uri>https://dev.azure.com/dnceng/internal/_git/aspnet-AspNetCore</Uri>
+      <Sha>bcc9ca306c326a9fc9a2ba4277f973f9eeca0731</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Mvc.Analyzers" Version="3.0.2-servicing.19569.3">
-      <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>7891c8318f1026deb1c96054eebead058bb4f50f</Sha>
+    <Dependency Name="Microsoft.AspNetCore.Mvc.Analyzers" Version="3.0.2-servicing.19611.6">
+      <Uri>https://dev.azure.com/dnceng/internal/_git/aspnet-AspNetCore</Uri>
+      <Sha>bcc9ca306c326a9fc9a2ba4277f973f9eeca0731</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="3.0.2-servicing.19569.3">
-      <Uri>https://github.com/aspnet/AspNetCore</Uri>
-      <Sha>7891c8318f1026deb1c96054eebead058bb4f50f</Sha>
+    <Dependency Name="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="3.0.2-servicing.19611.6">
+      <Uri>https://dev.azure.com/dnceng/internal/_git/aspnet-AspNetCore</Uri>
+      <Sha>bcc9ca306c326a9fc9a2ba4277f973f9eeca0731</Sha>
     </Dependency>
     <Dependency Name="Microsoft.Web.Xdt" Version="3.0.0" Pinned="true">
       <Uri>https://github.com/aspnet/xdt</Uri>
