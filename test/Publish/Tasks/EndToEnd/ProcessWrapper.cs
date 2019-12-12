@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 #if NET46
@@ -10,8 +10,11 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
 {
     public class ProcessWrapper
     {
-        public int? RunProcess(string fileName, string arguments, string workingDirectory, out int? processId, bool createDirectoryIfNotExists = true, bool waitForExit = true, ITestOutputHelper testOutputHelper = null)
+        public int? RunProcess(string fileName, string arguments, string workingDirectory, out int? processId, out string standardOut, out string standardError, bool createDirectoryIfNotExists = true, bool waitForExit = true, ITestOutputHelper testOutputHelper = null)
         {
+            standardOut = string.Empty;
+            standardError = string.Empty;
+
             if (createDirectoryIfNotExists && !Directory.Exists(workingDirectory))
             {
                 Directory.CreateDirectory(workingDirectory);
@@ -36,8 +39,8 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             if (waitForExit)
             {
                 testProcess.WaitForExit(3 * 60 * 1000);
-                var standardOut = testProcess.StandardOutput.ReadToEnd();
-                var standardError = testProcess.StandardError.ReadToEnd();
+                standardOut = testProcess.StandardOutput.ReadToEnd();
+                standardError = testProcess.StandardError.ReadToEnd();
                 testOutputHelper?.WriteLine(standardOut);
                 testOutputHelper?.WriteLine(standardError);
                 return testProcess?.ExitCode;

@@ -36,12 +36,19 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             string testFolder = Path.Combine(BaseTestDirectory, projectName);
 
             // dotnet new
-            int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true, testOutputHelper: _testOutputHelper);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            int? exitCode = new ProcessWrapper().RunProcess(
+                DotNetExeName,
+                dotNetNewArguments,
+                testFolder,
+                out int? processId1,
+                out string standardOut,
+                out string standardError,
+                createDirectoryIfNotExists: true,
+                testOutputHelper: _testOutputHelper);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             Publish(testFolder, projectName, configuration, msBuildType);
         }
-
 
         [Theory]
         [InlineData("netcoreapp3.1", "Release", "core")]
@@ -54,8 +61,15 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             string dotNetNewArguments = $"new webapi --framework {templateFramework} {DotNetNewAdditionalArgs}";
             string testFolder = Path.Combine(BaseTestDirectory, projectName);
             // dotnet new
-            int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            int? exitCode = new ProcessWrapper().RunProcess(
+                DotNetExeName,
+                dotNetNewArguments,
+                testFolder,
+                out int? processId1,
+                out string standardOut,
+                out string standardError,
+                createDirectoryIfNotExists: true);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             Publish(testFolder, projectName, configuration, msBuildType, isStandAlone:false, resultUrl:"http://localhost:5000/api/Values");
         }
@@ -81,8 +95,15 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             string testFolder = Path.Combine(BaseTestDirectory, projectName);
 
             // dotnet new
-            int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            int? exitCode = new ProcessWrapper().RunProcess(
+                DotNetExeName,
+                dotNetNewArguments,
+                testFolder,
+                out int? processId1,
+                out string standardOut,
+                out string standardError,
+                createDirectoryIfNotExists: true);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             Publish(testFolder, projectName, configuration, msBuildType);
         }
@@ -108,8 +129,15 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
             string testFolder = Path.Combine(BaseTestDirectory, projectName);
 
             // dotnet new
-            int? exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotNetNewArguments, testFolder, out int? processId1, createDirectoryIfNotExists: true);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            int? exitCode = new ProcessWrapper().RunProcess(
+                DotNetExeName,
+                dotNetNewArguments,
+                testFolder,
+                out int? processId1,
+                out string standardOut,
+                out string standardError,
+                createDirectoryIfNotExists: true);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             Publish(testFolder, projectName, configuration, msBuildType);
         }
@@ -120,13 +148,13 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
 
             // dotnet restore
             string dotnetRestoreArguments = "restore --source https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json --source https://api.nuget.org/v3/index.json";
-            exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotnetRestoreArguments, testFolder, out int? processId2);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotnetRestoreArguments, testFolder, out int? processId2, out string standardOut, out string standardError);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             // dotnet build
             string dotnetBuildArguments = "build";
-            exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotnetBuildArguments, testFolder, out int? processId3);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            exitCode = new ProcessWrapper().RunProcess(DotNetExeName, dotnetBuildArguments, testFolder, out int? processId3, out standardOut, out standardError);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             // msbuild publish
             string fileName = "msbuild";
@@ -137,8 +165,8 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests.EndToEnd
                 dotnetPublishArguments = $"{fileName} {dotnetPublishArguments}";
                 fileName = DotNetExeName;
             }
-            exitCode = new ProcessWrapper().RunProcess(fileName, dotnetPublishArguments, testFolder, out int? processId4);
-            Assert.True(exitCode.HasValue && exitCode.Value == 0);
+            exitCode = new ProcessWrapper().RunProcess(fileName, dotnetPublishArguments, testFolder, out int? processId4, out standardOut, out standardError);
+            Assert.True(exitCode.HasValue && exitCode.Value == 0, $"StdOut:'{standardOut}', StdErr:'{standardError}'");
 
             string publishOutputFolderFullPath = Path.Combine(testFolder, publishOutputFolder);
 
