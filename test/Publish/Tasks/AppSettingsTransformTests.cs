@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -49,6 +49,33 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests
             }
         }
 
+        [Theory]
+        [InlineData("DefaultConnection", @"Server=(localdb)\mssqllocaldb;Database=defaultDB;Trusted_Connection=True;MultipleActiveResultSets=true")]
+        [InlineData("EmptyConnection", @"")]
+        [InlineData("", @"SomeConnectionStringValue")]
+        public void AppSettingsTransform_DoesNotFailsIfEntryIsMissinginAppSettings(string connectionName, string connectionString)
+        {
+            // Arrange
+            ITaskItem[] taskItemArray = new ITaskItem[1];
+            TaskItem connectionstringTaskItem = new TaskItem(connectionName);
+            connectionstringTaskItem.SetMetadata("Value", connectionString);
+            taskItemArray[0] = connectionstringTaskItem;
+
+            string appsettingsFile = AppSettingsTransform.GenerateDefaultAppSettingsJsonFile();
+            File.WriteAllText(appsettingsFile, "{}");
+
+            // Act 
+            bool succeed = AppSettingsTransform.UpdateDestinationConnectionStringEntries(appsettingsFile, taskItemArray);
+
+            // Assert
+            Assert.True(succeed);
+
+            if (File.Exists(appsettingsFile))
+            {
+                File.Delete(appsettingsFile);
+            }
+        }
+
         private static readonly ITaskItem DefaultConnectionTaskItem = new TaskItem("DefaultConnection", new Dictionary<string, string>() { { "Value", @"Server=(localdb)\mssqllocaldb; Database=defaultDB;Trusted_Connection=True;MultipleActiveResultSets=true" } });
         private static readonly ITaskItem CarConnectionTaskItem = new TaskItem("CarConnection", new Dictionary<string, string>() { { "Value", @"Server=(localdb)\mssqllocaldb; Database=CarDB;Trusted_Connection=True;MultipleActiveResultSets=true" } });
         private static readonly ITaskItem PersonConnectionTaskItem = new TaskItem("PersonConnection", new Dictionary<string, string>() { { "Value", @"Server=(localdb)\mssqllocaldb; Database=PersonDb;Trusted_Connection=True;MultipleActiveResultSets=true" } });
@@ -84,6 +111,35 @@ namespace Microsoft.NET.Sdk.Publish.Tasks.Tests
             if (File.Exists(destinationAppSettingsFile))
             {
                 File.Delete(destinationAppSettingsFile);
+            }
+        }
+
+        [Theory]
+        [InlineData("DefaultConnection", @"Server=(localdb)\mssqllocaldb;Database=defaultDB;Trusted_Connection=True;MultipleActiveResultSets=true")]
+        [InlineData("EmptyConnection", @"")]
+        [InlineData("", @"SomeConnectionStringValue")]
+        public void AppSettingsTransform_UpdateConnectionStringEvenIfConnectionStringSectionMissing(string connectionName, string connectionString)
+        {
+            // Arrange
+            ITaskItem[] taskItemArray = new ITaskItem[1];
+            var connectionstringTaskItem = new TaskItem(connectionName);
+            connectionstringTaskItem.SetMetadata("Value", connectionString);
+            taskItemArray[0] = connectionstringTaskItem;
+
+            // appSettings.json with no ConnectionStrings (empty)
+            var appsettingsFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            File.WriteAllText(appsettingsFile, "{}");
+
+            // Act 
+            AppSettingsTransform.UpdateDestinationConnectionStringEntries(appsettingsFile, taskItemArray);
+
+            // Assert
+            JToken connectionStringValue = JObject.Parse(File.ReadAllText(appsettingsFile))["ConnectionStrings"][connectionName];
+            Assert.Equal(connectionStringValue.ToString(), connectionString);
+
+            if (File.Exists(appsettingsFile))
+            {
+                File.Delete(appsettingsFile);
             }
         }
     }
