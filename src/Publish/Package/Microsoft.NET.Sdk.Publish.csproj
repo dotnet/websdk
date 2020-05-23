@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PublishRoot Condition="'$(PublishRoot)' == ''">$(RepoRoot)\src\Publish\</PublishRoot>
@@ -27,7 +27,8 @@
     </Content>
 
     <Content Include="$(ArtifactsBinDir)\Microsoft.NET.Sdk.Publish.Tasks\$(Configuration)\net46\$(RuntimeIdenfier)\Microsoft.Web.Deployment.dll;
-                      $(ArtifactsBinDir)\Microsoft.NET.Sdk.Publish.Tasks\$(Configuration)\net46\$(RuntimeIdenfier)\Microsoft.Web.Delegation.dll"
+                      $(ArtifactsBinDir)\Microsoft.NET.Sdk.Publish.Tasks\$(Configuration)\net46\$(RuntimeIdenfier)\Microsoft.Web.Delegation.dll;
+                      $(ArtifactsBinDir)\Microsoft.NET.Sdk.Publish.Tasks\$(Configuration)\net46\$(RuntimeIdenfier)\Microsoft.Web.Deployment.Tracing.dll"
              Condition=" '$(DotNetBuildFromSource)' != 'true' ">
       <Pack>true</Pack>
       <PackagePath>tools\net46</PackagePath>
