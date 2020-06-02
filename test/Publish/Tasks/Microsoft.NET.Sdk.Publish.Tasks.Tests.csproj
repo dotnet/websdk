@@ -4,6 +4,7 @@
     <TargetFrameworks Condition=" '$(DotNetBuildFromSource)' == 'true' ">netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Microsoft.NET.Sdk.Publish.Tasks.Tests</AssemblyName>
     <ExcludeFromSourceBuild>true</ExcludeFromSourceBuild>
+    <EndToEndTestsDisabled>true</EndToEndTestsDisabled>
   </PropertyGroup>
   
   <ItemGroup>
