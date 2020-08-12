@@ -17,10 +17,10 @@
     <SystemSecurityCryptographyProtectedDataPackageVersion>4.3.0</SystemSecurityCryptographyProtectedDataPackageVersion>
     <SystemCollectionsSpecializedPackageVersion>4.3.0</SystemCollectionsSpecializedPackageVersion>
     <SystemXmlXmlDocumentPackageVersion>4.3.0</SystemXmlXmlDocumentPackageVersion>
-    <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.8-servicing.20412.5</MicrosoftAspNetCoreAnalyzersPackageVersion>
+    <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.7-servicing.20372.13</MicrosoftAspNetCoreAnalyzersPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>3.1.400</VersionPrefix>
+    <VersionPrefix>3.1.401</VersionPrefix>
     <PreReleaseVersionLabel>servicing</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
@@ -44,8 +44,14 @@
 
   -->
   <PropertyGroup Label="Automated">
+<<<<<<< HEAD
     <MicrosoftAspNetCoreComponentsAnalyzersPackageVersion>3.1.8</MicrosoftAspNetCoreComponentsAnalyzersPackageVersion>
     <MicrosoftAspNetCoreMvcAnalyzersPackageVersion>3.1.8-servicing.20412.5</MicrosoftAspNetCoreMvcAnalyzersPackageVersion>
     <MicrosoftAspNetCoreMvcApiAnalyzersPackageVersion>3.1.8-servicing.20412.5</MicrosoftAspNetCoreMvcApiAnalyzersPackageVersion>
+=======
+    <MicrosoftAspNetCoreComponentsAnalyzersPackageVersion>3.1.7</MicrosoftAspNetCoreComponentsAnalyzersPackageVersion>
+    <MicrosoftAspNetCoreMvcAnalyzersPackageVersion>3.1.7-servicing.20372.13</MicrosoftAspNetCoreMvcAnalyzersPackageVersion>
+    <MicrosoftAspNetCoreMvcApiAnalyzersPackageVersion>3.1.7-servicing.20372.13</MicrosoftAspNetCoreMvcApiAnalyzersPackageVersion>
+>>>>>>> 2f67362523910047cf158138182f5bfca2681e3b
   </PropertyGroup>
 </Project>
