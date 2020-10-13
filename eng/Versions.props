@@ -20,7 +20,7 @@
     <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.9-servicing.20473.9</MicrosoftAspNetCoreAnalyzersPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>3.1.403</VersionPrefix>
+    <VersionPrefix>3.1.404</VersionPrefix>
     <PreReleaseVersionLabel>servicing</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
