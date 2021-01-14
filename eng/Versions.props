@@ -20,18 +20,8 @@
     <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.11-servicing.20569.15</MicrosoftAspNetCoreAnalyzersPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>3.1.11</VersionPrefix>
+    <VersionPrefix>3.1.12</VersionPrefix>
     <PreReleaseVersionLabel>servicing</PreReleaseVersionLabel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RestoreSources>
-      $(RestoreSources);
-      https://dotnet.myget.org/F/dotnet-core/api/v3/index.json;
-      https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore/index.json;
-      https://dotnet.myget.org/F/msbuild/api/v3/index.json;
-      https://www.myget.org/F/nugetbuild/api/v3/index.json;
-      https://dotnet.myget.org/F/dotnet-web/api/v3/index.json
-    </RestoreSources>
   </PropertyGroup>
   <!--
 
