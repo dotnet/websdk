@@ -143,8 +143,7 @@ stages:
           
       - job: Linux
         pool:
-          name: Hosted Ubuntu 1604
-        container: LinuxContainer
+          vmImage: 'ubuntu-18.04'
         strategy:
           matrix:
             debug_configuration:
