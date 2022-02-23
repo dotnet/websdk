@@ -116,7 +116,7 @@ stages:
 
       - job: OSX
         pool:
-          vmImage: 'macOS-latest'
+          vmImage: macOS-10.15
         strategy:
           matrix:
             debug_configuration:
