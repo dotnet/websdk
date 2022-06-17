@@ -10,10 +10,6 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildFrameworkPackageVersion)" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(EndToEndTestsDisabled)' == 'true'">
-    <Compile Remove="EndToEnd\*.cs" />
-  </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <Reference Include="System" />
