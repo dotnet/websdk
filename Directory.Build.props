@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Net.Http" Version="$(SystemNetHttpVersion)" />
-    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="$(SystemSecurityCryptographyX509CertificatesVersion)"/>
+    <PackageReference Include="System.Net.Http" Version="$(SystemNetHttpVersion)" NoWarn="NU1604;NU1701"/>
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="$(SystemSecurityCryptographyX509CertificatesVersion)" NoWarn="NU1604;NU1701"/>
   </ItemGroup>
 </Project>
