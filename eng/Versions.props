@@ -22,7 +22,7 @@
     <MicrosoftAspNetCoreAnalyzersPackageVersion>3.1.29-servicing.22418.8</MicrosoftAspNetCoreAnalyzersPackageVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>3.1.423</VersionPrefix>
+    <VersionPrefix>3.1.424</VersionPrefix>
     <PreReleaseVersionLabel>servicing</PreReleaseVersionLabel>
   </PropertyGroup>
   <!--
