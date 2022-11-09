@@ -21,6 +21,8 @@ variables:
     value: true
   - name: _DotNetArtifactsCategory
     value: .NETCore
+  - name: Codeql.Enabled
+    value: true
 
 resources:
   containers:
@@ -116,7 +118,7 @@ stages:
 
       - job: OSX
         pool:
-          vmImage: macOS-10.15
+          vmImage: macos-11
         strategy:
           matrix:
             debug_configuration:
