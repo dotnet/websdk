@@ -51,7 +51,7 @@ stages:
             name: Hosted VS2017
           ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
             name: NetCore1ESPool-Svc-Internal
-            demands: ImageOverride -equals build.windows.10.amd64.vs2017
+            demands: ImageOverride -equals windows.vs2017.amd64
 
         variables:
         - _Script: eng\common\cibuild.cmd
