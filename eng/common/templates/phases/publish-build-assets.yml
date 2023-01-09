@@ -39,7 +39,6 @@ phases:
               /p:MaestroApiEndpoint=https://maestro-prod.westus2.cloudapp.azure.com
               /p:PublishUsingPipelines=${{ parameters.publishUsingPipelines }}
               /p:Configuration=$(_BuildConfig)
-              /p:CheckEolTargetFramework=false
           condition: ${{ parameters.condition }}
           continueOnError: ${{ parameters.continueOnError }}
         - task: PublishBuildArtifacts@1
